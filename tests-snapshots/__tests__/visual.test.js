@@ -14,7 +14,7 @@ describe('Visual Regression Testing', () => {
 
     beforeAll(async function () {
         browser = await puppeteer.launch({
-            headless: true
+            headless: false
         })
         page = await browser.newPage()
     })
@@ -63,5 +63,14 @@ describe('Visual Regression Testing', () => {
             failureThresholdType: 'pixel',
             failureThreshold: 500,
         })
+    })
+
+    test.only('Remove Element Before Snapshot', async function () {
+        await page.goto('https://www.example.com')
+        await page.evaluate(() => {
+            ;
+            (document.querySelectorAll('h1') || []).forEach(el => el.remove())
+        })
+        await page.waitFor(3000)
     })
 })
